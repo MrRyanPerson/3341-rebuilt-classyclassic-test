@@ -63,6 +63,8 @@ public class Shooter extends SubsystemBase {
 
     // Closed Loop Controller
     primaryFlywheelController = primaryFlywheelMotor.getClosedLoopController();
+    topFeederController = topFeederMotor.getClosedLoopController();
+    lowerFeederController = lowerFeederMotor.getClosedLoopController();
   }
 
   // Motor Control

@@ -15,14 +15,18 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.ShooterCommands;
+import frc.robot.subsystems.dashboard.Dashboard;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIONavX;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
+import frc.robot.subsystems.shooter.Shooter;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -34,6 +38,8 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
+  private Shooter shooter;
+  private Dashboard dashboard;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -53,6 +59,8 @@ public class RobotContainer {
                 new ModuleIOSpark(1),
                 new ModuleIOSpark(2),
                 new ModuleIOSpark(3));
+        createShooter();
+        createDashboard();
         break;
 
       case SIM:
@@ -64,6 +72,8 @@ public class RobotContainer {
                 new ModuleIOSim(),
                 new ModuleIOSim(),
                 new ModuleIOSim());
+        createShooter();
+        createDashboard();
         break;
 
       default:
@@ -100,6 +110,24 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
   }
+
+  // Create Subsystems
+  private void createDashboard() {
+    this.dashboard = new Dashboard(shooter);
+  }
+
+  private void createShooter() {
+    this.shooter = new Shooter();
+
+    Trigger flywheelTrigger = controller.rightBumper();
+    Trigger feedTrigger = controller.rightTrigger();
+
+    // TODO: Create pose estimation to get shooter distance
+    flywheelTrigger.toggleOnTrue(ShooterCommands.toggleFlywheel(shooter, dashboard, drive));
+    feedTrigger.toggleOnTrue(ShooterCommands.toggleFeed(shooter, dashboard));
+  }
+
+  private void createIntake() {}
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by

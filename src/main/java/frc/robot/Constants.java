@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.RobotBase;
  * (log replay from a file).
  */
 public final class Constants {
+  // TODO: UPDATE THIS BEFORE COMP
   public static final DashboardMode dashboardMode = DashboardMode.DEBUG;
   public static final Mode simMode = Mode.SIM;
   public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
@@ -128,7 +129,7 @@ public final class Constants {
     public static final SparkFlexConfig secondaryFlywheelConfig = new SparkFlexConfig();
     public static final SparkFlexConfig feederConfig = new SparkFlexConfig();
 
-    public static final double feederRPM = 500;
+    public static final double feederPower = 0.25;
 
     public static final boolean reverseFlywheel = false;
     public static final boolean reverseLowerFeeder = false;
