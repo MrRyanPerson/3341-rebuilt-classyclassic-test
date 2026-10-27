@@ -1,3 +1,6 @@
 package frc.robot.commands;
 
-public class ShooterCommands {}
+public class ShooterCommands {
+
+  private ShooterCommands() {}
+}

@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.RobotBase;
  * (log replay from a file).
  */
 public final class Constants {
+  public static final DashboardMode dashboardMode = DashboardMode.DEBUG;
   public static final Mode simMode = Mode.SIM;
   public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
 
@@ -35,6 +36,13 @@ public final class Constants {
 
     /** Replaying from a log file. */
     REPLAY
+  }
+
+  public static enum DashboardMode {
+    // Competition Mode
+    PROD,
+    // Allows you to manually change values ie: flywheel speed
+    DEBUG
   }
 
   public static final class IntakeConstants {
