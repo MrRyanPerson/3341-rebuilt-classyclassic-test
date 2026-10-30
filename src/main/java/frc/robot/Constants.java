@@ -68,6 +68,8 @@ public final class Constants {
 
     public static final double intakeArmForwardLimit = 0.22;
     public static final double intakeArmReverseLimit = 0.405;
+    public static final double intakeArmForwardVelocity = -200;
+    public static final double intakeArmReverseVelocity = 600;
 
     public static final boolean intakeRollerReverse = true;
     public static final boolean intakeArmReverse = false;

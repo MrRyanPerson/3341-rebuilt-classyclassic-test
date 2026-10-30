@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.ShooterCommands;
 import frc.robot.subsystems.dashboard.Dashboard;
 import frc.robot.subsystems.drive.Drive;
@@ -26,6 +27,7 @@ import frc.robot.subsystems.drive.GyroIONavX;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
+import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -39,6 +41,7 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private Shooter shooter;
+  private Intake intake;
   private Dashboard dashboard;
 
   // Controller
@@ -59,6 +62,7 @@ public class RobotContainer {
                 new ModuleIOSpark(1),
                 new ModuleIOSpark(2),
                 new ModuleIOSpark(3));
+        createIntake();
         createShooter();
         createDashboard();
         break;
@@ -72,6 +76,7 @@ public class RobotContainer {
                 new ModuleIOSim(),
                 new ModuleIOSim(),
                 new ModuleIOSim());
+        createIntake();
         createShooter();
         createDashboard();
         break;
@@ -113,7 +118,7 @@ public class RobotContainer {
 
   // Create Subsystems
   private void createDashboard() {
-    this.dashboard = new Dashboard(shooter);
+    this.dashboard = new Dashboard(shooter, intake, drive);
   }
 
   private void createShooter() {
@@ -127,7 +132,17 @@ public class RobotContainer {
     feedTrigger.toggleOnTrue(ShooterCommands.toggleFeed(shooter, dashboard));
   }
 
-  private void createIntake() {}
+  private void createIntake() {
+    intake = new Intake();
+
+    Trigger hopperTrigger = controller.b();
+    Trigger feedTrigger = controller.a();
+
+    feedTrigger
+        .onTrue(IntakeCommands.startIntake(intake, dashboard))
+        .onFalse(IntakeCommands.stopIntake(intake, dashboard));
+    hopperTrigger.toggleOnTrue(IntakeCommands.toggleHopper(intake, dashboard));
+  }
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
